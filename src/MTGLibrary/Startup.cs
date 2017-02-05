@@ -8,8 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
-namespace MTGLib
+namespace MTGLibrary
 {
     public class Startup
     {
@@ -35,6 +36,7 @@ namespace MTGLib
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // Add framework services.
             services.AddMvc();
             services.AddSingleton<IConfiguration>(Configuration);
@@ -61,6 +63,10 @@ namespace MTGLib
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "Card Details",
+                    template: "Card/Details/{code}/{number}", 
+                    defaults: new { controller = "Card", action = "Details" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@using MTGLibrary.ViewModels
+@model CardDetailsViewModel
+@{
+
+}
+
+
+<div class="card" id="@Model.Card.Id">
+    <h1>@Model.Card.Name</h1>
+    <ul class="nav">
+        <li class="nav-tabs">Details</li>
+        <li class="nav-tabs">Sets</li>
+    </ul>
+    <div class="tab-content">
+        <div>
+            <span>Card Name:</span> @Model.Card.Name
+        </div>
+        <div>
+            <span>Mana Cost:</span> @Model.Card.ManaCost
+        </div>
+        <div>
+            <span>Converted Mana Cost:</span> @Model.Card.Cmc
+        </div>
+        <div>
+            <span>Types:</span> @Model.Card.Type
+        </div>
+    </div>
+</div>

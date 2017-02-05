@@ -15,6 +15,7 @@ namespace MTGLibrary.Data
         private ISetRepository _setRepository;
         private ICardRepository _cardRepository;
         private IRarityRepository _rarityRepository;
+        private IRulingRepository _rulingRepository;
         private bool _disposed;
 
         public UnitOfWork(string connectionString)
@@ -48,6 +49,14 @@ namespace MTGLibrary.Data
             }
         }
 
+        public IRulingRepository RulingRepository
+        {
+            get
+            {
+                return _rulingRepository ?? (_rulingRepository = new RulingRepository(_transaction));
+            }
+        }
+
         public void Commit()
         {
             try
@@ -72,6 +81,7 @@ namespace MTGLibrary.Data
             _setRepository = null;
             _cardRepository = null;
             _rarityRepository = null;
+            _rulingRepository = null;
         }
 
         public void Dispose()

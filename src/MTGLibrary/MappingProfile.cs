@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MTGLib
+namespace MTGLibrary
 {
     public class MappingProfile : Profile
     {
@@ -18,6 +18,11 @@ namespace MTGLib
             CreateMap<ImportCard, Card>()
                 .ForMember(c => c.Id, opt => opt.Ignore())
                 .ForMember(c => c.Rarity, opt => opt.Ignore());
+            CreateMap<ImportRuling, Ruling>();
+
+            CreateMap<Set, Models.Set>();
+            CreateMap<Rarity, Models.Rarity>();
+            CreateMap<Card, Models.Card>();
         }
     }
 }

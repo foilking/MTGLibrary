@@ -8,7 +8,7 @@ namespace MTGLibrary.Data.Repositories
 {
     public interface ICardRepository
     {
-        IEnumerable<Card> Find(string name = null, int? setId = null, int? multiverseId = null);
+        IEnumerable<Card> Find(string name = null, string code = null, string number = null, int? setId = null, int? multiverseId = null);
         void Add(Card card);
         void Update(Card card);
         void Remove(Card card);

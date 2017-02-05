@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MTGLibrary.Data.Models
+namespace MTGLibrary.Models
 {
     public class Card
     {
@@ -44,13 +44,5 @@ namespace MTGLibrary.Data.Models
         public bool Reserved { get; set; }
         public bool Starter { get; set; }
         public bool Timeshifted { get; set; }
-
-        public int[] Variations { get; set; }
-
-        public string[] Supertypes { get; set; }
-        public string[] Types { get; set; }
-        public string[] Subtypes { get; set; }
-        public string[] ColorIdentity { get; set; }
-        public string[] Colors { get; set; }
     }
 }

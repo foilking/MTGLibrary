@@ -52,38 +52,41 @@ namespace MTGLibrary.Data.Repositories
 
         }
 
-        public IEnumerable<Card> Find(string name = null, int? setId = null, int? multiverseId = null)
+        public IEnumerable<Card> Find(string name = null, string code = null, string number = null, int? setId = null, int? multiverseId = null)
         {
-            var parameter = new DynamicParameters();
-            var query = "SELECT [Card].*, [Set].*, [Rarity].* FROM [Card]"
+            var cardParameters = new DynamicParameters();
+            var cardQuery = "SELECT [Card].* FROM [Card]"
                 + "INNER JOIN [Set] ON [Card].[SetId] = [Set].[Id]"
                 + "INNER JOIN [Rarity] ON [Card].[RarityId] = [Rarity].[Id]"
                 + "WHERE 1 = 1";
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query += " AND [Card].[Name] = @Name";
-                parameter.Add("Name", name);
+                cardQuery += " AND [Card].[Name] = @Name";
+                cardParameters.Add("Name", name);
+            }
+            if (!string.IsNullOrWhiteSpace(code))
+            {
+                cardQuery += " AND [Set].[Code] = @Code";
+                cardParameters.Add("Code", code);
+            }
+            if (!string.IsNullOrWhiteSpace(number))
+            {
+                cardQuery += " AND [Card].[Number] = @Number";
+                cardParameters.Add("Number", number);
             }
             if (setId.HasValue)
             {
-                query += " AND [Card].[SetId] = @SetId";
-                parameter.Add("SetId", setId.Value);
+                cardQuery += " AND [Card].[SetId] = @SetId";
+                cardParameters.Add("SetId", setId.Value);
             }
             if (multiverseId.HasValue)
             {
-                query += " AND [Card].[MultiverseId] = @MultiverseId";
-                parameter.Add("MultiverseId", multiverseId.Value);
+                cardQuery += " AND [Card].[MultiverseId] = @MultiverseId";
+                cardParameters.Add("MultiverseId", multiverseId.Value);
             }
-            return Connection.Query<Card, Set, Rarity, Card>(query,
-                (card, set, rarity) =>
-                {
-                    if (card != null)
-                    {
-                        card.Set = set;
-                        card.Rarity = rarity;
-                    }
-                    return card;
-                }, parameter, transaction: Transaction);
+            var cards = Connection.Query<Card>(cardQuery, cardParameters, transaction: Transaction);
+
+            return cards;
         }
 
         public void Remove(Card card)

@@ -17,6 +17,7 @@ namespace MTGLibrary.Controllers
     public class ImportController : Controller
     {
         private string _connectionString;
+        private string _imageHostingConnection;
         private readonly IMapper _mapper;
 
         public ImportController(IConfiguration config, IMapper mapper)
@@ -83,6 +84,9 @@ namespace MTGLibrary.Controllers
                         var mappedCard = _mapper.Map<Data.Models.Card>(importCard);
                         mappedCard.Rarity = rarities.FirstOrDefault(r => r.Name == importCard.rarity);
                         mappedCard.Set = set;
+                        
+                        //var imageString = string.Format(@"C:\Users\foilking\Pictures\Magic Sets\{0}\{1}.jpg", set.Code, mappedCard.Number.PadLeft(3, '0'));
+
                         Data.Models.Card card = null;
                         if (mappedCard.MultiverseId > 0)
                         {
@@ -94,6 +98,7 @@ namespace MTGLibrary.Controllers
                         }
                         if (card == null)
                         {
+
                             worker.CardRepository.Add(mappedCard);
                         }
                         else
@@ -102,7 +107,22 @@ namespace MTGLibrary.Controllers
                             worker.CardRepository.Update(mappedCard);
                         }
                         worker.Commit();
+                        if (mappedCard.MultiverseId > 0)
+                        {
+                            card = worker.CardRepository.Find(multiverseId: mappedCard.MultiverseId).FirstOrDefault();
+                        }
+                        else
+                        {
+                            card = worker.CardRepository.Find(name: mappedCard.Name, setId: mappedCard.Set.Id).FirstOrDefault();
+                        }
 
+                        //foreach (var importRuling in importCard.rulings)
+                        //{
+                        //    var mappedRuling = _mapper.Map<Data.Models.Ruling>(importRuling);
+                        //    mappedRuling.Card = card;
+                            
+                        //    if 
+                        //}
                     }
                 }
             }

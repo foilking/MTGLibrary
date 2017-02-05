@@ -11,6 +11,7 @@ namespace MTGLibrary.Data
         ISetRepository SetRepository { get; }
         ICardRepository CardRepository { get; }
         IRarityRepository RarityRepository { get; }
+        IRulingRepository RulingRepository { get; }
 
         void Commit();
     }
